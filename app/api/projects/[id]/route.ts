@@ -1,14 +1,11 @@
-import { prisma } from '@/lib/db'
+import { getProject, deleteProject } from '@/lib/mockData'
 
 export async function GET(
   _req: Request,
   ctx: RouteContext<'/api/projects/[id]'>
 ) {
   const { id } = await ctx.params
-  const project = await prisma.project.findUnique({
-    where: { id },
-    include: { tasks: { orderBy: { sortOrder: 'asc' } } },
-  })
+  const project = getProject(id)
   if (!project) return Response.json({ error: 'Not found' }, { status: 404 })
   return Response.json(project)
 }
@@ -18,6 +15,6 @@ export async function DELETE(
   ctx: RouteContext<'/api/projects/[id]'>
 ) {
   const { id } = await ctx.params
-  await prisma.project.delete({ where: { id } })
+  deleteProject(id)
   return new Response(null, { status: 204 })
 }
