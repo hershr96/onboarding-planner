@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       title: t.title,
       channel: t.channel,
       monthOffset: t.monthOffset,
-      dueDate: t.dueDate,
+      dueDate: t.dueDate instanceof Date ? t.dueDate.toISOString() : t.dueDate,
       status: 'not_started' as const,
       assignee: '',
       notes: '',
